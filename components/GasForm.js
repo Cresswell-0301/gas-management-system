@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const GasForm = ({ onSubmit, isSubmitting, initialData }) => {
     const [type, setType] = useState(initialData?.type || "");
-    const [price, setPrice] = useState(initialData?.price || "");
+    const [price, setPrice] = useState(initialData?.price.$numberDecimal || "");
 
     const handlePriceChange = (e) => {
         const value = e.target.value;
