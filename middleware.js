@@ -15,7 +15,7 @@ export function middleware(req) {
 export const config = {
     matcher: [
         "/",
-        
+
         "/sales",
 
         "/companies",
@@ -28,13 +28,12 @@ export const config = {
         "/users/add",
 
         "/api/orders",
-        "/api/orders/[order_id]",
+        "/api/orders/[orderId]",
 
         "/api/companies",
         "/api/gas",
 
         "/api/users",
-        "/api/users/[user_id]",
 
         "/api/export-pdf",
     ],
