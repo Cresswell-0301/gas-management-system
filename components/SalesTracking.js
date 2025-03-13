@@ -1,6 +1,6 @@
 "use client";
 
-import { SquarePen, Trash2 } from "lucide-react";
+import ActionComponent from "./ActionComponent";
 
 const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
     return (
@@ -42,17 +42,7 @@ const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
                                 <td className="px-4 py-2 text-sm text-gray-800">{order.quantity}</td>
                                 <td className="px-4 py-2 text-sm text-gray-800">RM {parseFloat(order.totalPrice.$numberDecimal).toFixed(2)}</td>
                                 <td className="px-4 py-2 text-sm text-gray-700">
-                                    <div className="space-x-2 space-y-2">
-                                        {/* Edit */}
-                                        <button onClick={() => handleEditOrder(order)} className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600" title="Edit">
-                                            <SquarePen width={18} />
-                                        </button>
-
-                                        {/* Delete */}
-                                        <button onClick={() => handleDeleteOrder(order._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700" title="Delete">
-                                            <Trash2 width={18} />
-                                        </button>
-                                    </div>
+                                    <ActionComponent handleEdit={handleEditOrder} handleDelete={handleDeleteOrder} data={order} />
                                 </td>
                             </tr>
                         ))

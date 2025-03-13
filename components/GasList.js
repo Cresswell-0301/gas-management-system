@@ -1,4 +1,4 @@
-import { SquarePen, Trash2 } from "lucide-react";
+import ActionComponent from "./ActionComponent";
 
 const GasList = ({ gasTypes, handleEditGas, handleDeleteGas }) => {
     return (
@@ -23,17 +23,7 @@ const GasList = ({ gasTypes, handleEditGas, handleDeleteGas }) => {
                             <td className="px-4 py-2 text-sm text-gray-700">{gas.type}</td>
                             <td className="px-4 py-2 text-sm text-gray-700">RM {gas.price.$numberDecimal}</td>
                             <td className="px-4 py-2 text-sm text-gray-700">
-                                <div className="space-x-2 space-y-2">
-                                    {/* Edit */}
-                                    <button onClick={() => handleEditGas(gas)} className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600" title="Edit">
-                                        <SquarePen width={18} />
-                                    </button>
-
-                                    {/* Delete */}
-                                    <button onClick={() => handleDeleteGas(gas._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700" title="Delete">
-                                        <Trash2 width={18} />
-                                    </button>
-                                </div>
+                                <ActionComponent handleEdit={handleEditGas} handleDelete={handleDeleteGas} data={gas} />
                             </td>
                         </tr>
                     ))
