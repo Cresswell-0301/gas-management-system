@@ -17,7 +17,7 @@ const AddCompanyPage = () => {
 
         if (res.ok) {
             alert("Company added successfully");
-            window.location.href = "/admin/companies";
+            window.location.href = "/companies";
         } else {
             alert("Failed to add company. Please try again.");
         }

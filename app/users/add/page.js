@@ -35,7 +35,7 @@ const UserAddPage = () => {
 
         if (res.ok) {
             alert(await res.text());
-            window.location.href = "/admin/users";
+            window.location.href = "/users";
         } else {
             alert(await res.text());
         }
@@ -61,7 +61,13 @@ const UserAddPage = () => {
             </div>
 
             {/* User Form Section */}
-            <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto mb-8">{isLoading ? <p className="text-center text-gray-600">Loading...</p> : <UserForm onSubmit={editingUser ? handleUpdateUser : handleCreateUser} initialData={editingUser || {}} />}</div>
+            <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto mb-8">
+                {isLoading ? (
+                    <p className="text-center text-gray-600">Loading...</p>
+                ) : (
+                    <UserForm onSubmit={editingUser ? handleUpdateUser : handleCreateUser} initialData={editingUser || {}} />
+                )}
+            </div>
         </div>
     );
 };

@@ -17,7 +17,7 @@ const AddGasPage = () => {
 
         if (res.ok) {
             alert("Gas type added successfully");
-            window.location.href = "/admin/gas";
+            window.location.href = "/gas";
         } else {
             alert("Failed to add gas type. Please try again.");
         }

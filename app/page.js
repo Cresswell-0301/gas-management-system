@@ -45,7 +45,7 @@ export default function Home() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 ">
+        <div className="flex items-center justify-center h-full bg-gray-50 ">
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto my-auto w-full">
                 <OrderForm onSubmit={handleSubmit} companies={companies} gasTypes={gasTypes} isSubmitting={isSubmitting} />
             </div>

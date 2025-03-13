@@ -37,8 +37,10 @@ const UsersPage = () => {
         <div className="h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Manage Users</h1>
-                <Link href="/admin/users/add">
-                    <span className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Add</span>
+                <Link href="/users/add">
+                    <span className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        Add
+                    </span>
                 </Link>
             </div>
 

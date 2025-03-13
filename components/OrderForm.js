@@ -14,7 +14,7 @@ const OrderForm = ({ onSubmit, companies = [], gasTypes = [], initialData }) => 
             setPricePerGas(price);
 
             if (quantity) {
-                setTotalPrice(price * quantity || 0);
+                setTotalPrice((price * quantity).toFixed(2) || 0);
             }
         }
     }, [gasType, quantity, gasTypes]);
@@ -37,7 +37,12 @@ const OrderForm = ({ onSubmit, companies = [], gasTypes = [], initialData }) => 
             {/* Company Selector */}
             <div>
                 <label className="block text-gray-700 text-sm font-medium">Company</label>
-                <select value={companyId} onChange={(e) => setCompanyId(e.target.value)} className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <select
+                    value={companyId}
+                    onChange={(e) => setCompanyId(e.target.value)}
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                >
                     <option value="" disabled>
                         Select Company
                     </option>
@@ -54,7 +59,12 @@ const OrderForm = ({ onSubmit, companies = [], gasTypes = [], initialData }) => 
             {/* Gas Type Selector */}
             <div>
                 <label className="block text-gray-700 text-sm font-medium">Gas Type</label>
-                <select value={gasType} onChange={(e) => setGasType(e.target.value)} className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <select
+                    value={gasType}
+                    onChange={(e) => setGasType(e.target.value)}
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                >
                     <option value="" disabled>
                         Select Gas Type
                     </option>
@@ -71,24 +81,43 @@ const OrderForm = ({ onSubmit, companies = [], gasTypes = [], initialData }) => 
             {/* Quantity Input */}
             <div>
                 <label className="block text-gray-700 text-sm font-medium">Quantity</label>
-                <input type="text" value={quantity} onChange={handleQuantityChange} className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                <input
+                    type="text"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                />
             </div>
 
             {/* Price per Gas */}
             <div>
                 <label className="block text-gray-700 text-sm font-medium">Price per Gas (RM)</label>
-                <input type="text" value={`RM ${pricePerGas}`} disabled className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100" />
+                <input
+                    type="text"
+                    value={`RM ${pricePerGas === 0 ? pricePerGas.toFixed(2) : pricePerGas}`}
+                    disabled
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100"
+                />
             </div>
 
             {/* Total Price */}
             <div>
                 <label className="block text-gray-700 text-sm font-medium">Total Price (RM)</label>
-                <input type="text" value={`RM ${totalPrice.toFixed(2)}`} disabled className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100" />
+                <input
+                    type="text"
+                    value={`RM ${totalPrice === 0 ? totalPrice.toFixed(2) : totalPrice}`}
+                    disabled
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100"
+                />
             </div>
 
             {/* Submit Button */}
             <div className="text-center">
-                <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button
+                    type="submit"
+                    className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                     Submit Order
                 </button>
             </div>
