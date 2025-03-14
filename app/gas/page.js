@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import GasList from "@/components/GasList";
+import { Plus } from "lucide-react";
 
 const GasPage = () => {
     const router = useRouter();
     const [gasTypes, setGasTypes] = useState([]);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fetchGasTypes = async () => {
         const res = await fetch("/api/gas");
@@ -51,13 +51,14 @@ const GasPage = () => {
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Gas Types</h1>
                 <Link href="/gas/add">
-                    <span className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span className="flex px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <Plus className="mr-2" />
                         Add
                     </span>
                 </Link>
             </div>
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto">
-                <GasList gasTypes={gasTypes} handleEditGas={handleEditGas} handleDeleteGas={handleDeleteGas} isSubmitting={isSubmitting} />
+                <GasList gasTypes={gasTypes} handleEditGas={handleEditGas} handleDeleteGas={handleDeleteGas} />
             </div>
         </div>
     );

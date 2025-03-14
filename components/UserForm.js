@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+function PasswordViewIcon({ isPasswordVisible }) {
+    return isPasswordVisible ? <FaEyeSlash className="w-5 h-5 text-gray-600" /> : <FaEye className="w-5 h-5 text-gray-600" />;
+}
+
 const UserForm = ({ onSubmit, initialData = {} }) => {
     const [username, setUsername] = useState(initialData?.username || "");
     const [email, setEmail] = useState(initialData?.email || "");
@@ -56,8 +60,8 @@ const UserForm = ({ onSubmit, initialData = {} }) => {
                     required
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <div className="absolute top-3 right-3 cursor-pointer" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-                    {isPasswordVisible ? <FaEyeSlash className="w-5 h-5 text-gray-600" /> : <FaEye className="w-5 h-5 text-gray-600" />}
+                <div className="absolute top-9 right-3 cursor-pointer" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                    <PasswordViewIcon isPasswordVisible={isPasswordVisible} />
                 </div>
             </div>
 
@@ -71,8 +75,8 @@ const UserForm = ({ onSubmit, initialData = {} }) => {
                     required
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <div className="absolute top-3 right-3 cursor-pointer" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-                    {isPasswordVisible ? <FaEyeSlash className="w-5 h-5 text-gray-600" /> : <FaEye className="w-5 h-5 text-gray-600" />}
+                <div className="absolute top-9 right-3 cursor-pointer" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                    <PasswordViewIcon isPasswordVisible={isPasswordVisible} />
                 </div>
             </div>
 

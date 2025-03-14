@@ -2,57 +2,57 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import GasForm from "@/components/GasForm";
+import UserForm from "@/components/UserForm";
 import GetPathName from "@/controller/GetPathName";
 
-const EditGasPage = () => {
+const EditUserPage = () => {
     const router = useRouter();
-
-    const [gasData, setGasData] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        const fetchGasData = async () => {
-            const res = await fetch(`/api/gas/${GetPathName()}`);
+        const fetchUserData = async () => {
+            const res = await fetch(`/api/users/${GetPathName()}`);
             const data = await res.json();
-            setGasData(data);
+            setUserData(data);
         };
-        fetchGasData();
+
+        fetchUserData();
     }, [router.query]);
 
-    const handleSubmit = async (gasData) => {
+    const handleSubmit = async (userData) => {
         setIsSubmitting(true);
 
-        const res = await fetch(`/api/gas/${GetPathName()}`, {
+        const res = await fetch(`/api/users/${GetPathName()}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(gasData),
+            body: JSON.stringify(userData),
         });
 
         if (res.ok) {
-            alert("Gas data updated successfully!");
-            router.push("/gas");
+            alert("User data updated successfully!");
+            router.push("/users");
         } else {
-            alert("Failed to update gas");
+            alert("Failed to update user");
         }
 
         setIsSubmitting(false);
     };
 
-    if (gasData) {
+    if (userData) {
         return (
             <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-blue-600">Edit Gas Type</h1>
+                    <h1 className="text-4xl font-bold text-blue-600">Edit User</h1>
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto">
-                    <GasForm onSubmit={handleSubmit} isSubmitting={isSubmitting} initialData={gasData} />
+                    <UserForm onSubmit={handleSubmit} isSubmitting={isSubmitting} initialData={userData} />
                 </div>
             </div>
         );
     }
 };
 
-export default EditGasPage;
+export default EditUserPage;

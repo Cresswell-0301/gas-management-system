@@ -4,10 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import OrderForm from "@/components/OrderForm";
 import { CircleX, Undo2 } from "lucide-react";
-
-const GetPathName = () => {
-    return window.location.pathname.split("/")[2];
-};
+import GetPathName from "@/controller/GetPathName";
 
 const EditOrderPage = () => {
     const router = useRouter();

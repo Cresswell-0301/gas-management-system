@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { BadgeDollarSign, Building, Cylinder, SquarePlus, UserRound } from "lucide-react";
 
 const Navigation = () => {
     const pathname = usePathname();
@@ -44,27 +45,52 @@ const Navigation = () => {
                 <ul className="space-y-4">
                     <li>
                         <Link href="/">
-                            <span className={getLinkClassNames("/")}>Orders</span>
+                            <span className={getLinkClassNames("/")}>
+                                <div className="flex items-center gap-2">
+                                    <SquarePlus />
+                                    Orders
+                                </div>
+                            </span>
                         </Link>
                     </li>
                     <li>
                         <Link href="/sales">
-                            <span className={getLinkClassNames("/sales")}>Sales</span>
+                            <span className={getLinkClassNames("/sales")}>
+                                <div className="flex items-center gap-2">
+                                    <BadgeDollarSign />
+                                    Sales
+                                </div>
+                            </span>
                         </Link>
                     </li>
                     <li>
                         <Link href="/companies">
-                            <span className={getLinkClassNames("/companies")}>Companies</span>
+                            <span className={getLinkClassNames("/companies")}>
+                                <div className="flex items-center gap-2">
+                                    <Building />
+                                    Companies
+                                </div>
+                            </span>
                         </Link>
                     </li>
                     <li>
                         <Link href="/gas">
-                            <span className={getLinkClassNames("/gas")}>Gas Types</span>
+                            <span className={getLinkClassNames("/gas")}>
+                                <div className="flex items-center gap-2">
+                                    <Cylinder />
+                                    Gas Types
+                                </div>
+                            </span>
                         </Link>
                     </li>
                     {/* <li>
                         <Link href="/users">
-                            <span className={getLinkClassNames("/users")}>Users</span>
+                            <span className={getLinkClassNames("/users")}>
+                                <div className="flex items-center gap-2">
+                                    <UserRound />
+                                    Users
+                                </div>
+                            </span>
                         </Link>
                     </li> */}
                 </ul>

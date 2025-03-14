@@ -9,6 +9,11 @@ export function middleware(req) {
         return NextResponse.redirect(new URL("/invalid-device", req.url));
     }
 
+    // Block any routes that start with "/users"
+    if (req.url.includes("/users")) {
+        return NextResponse.redirect(new URL("/invalid-device", req.url));
+    }
+
     return NextResponse.next();
 }
 
@@ -29,6 +34,7 @@ export const config = {
 
         "/users",
         "/users/add",
+        "/users/[userId]/edit",
 
         "/api/orders",
         "/api/orders/[orderId]",
@@ -40,6 +46,7 @@ export const config = {
         "/api/gas/[gasId]",
 
         "/api/users",
+        "/api/users/[userId]",
 
         "/api/export-pdf",
     ],
