@@ -17,12 +17,15 @@ export const config = {
         "/",
 
         "/sales",
+        "/sales/[orderId]/edit",
 
         "/companies",
         "/companies/add",
+        "/companies/[companyId]/edit",
 
         "/gas",
         "/gas/add",
+        "/gas/[gasId]/edit",
 
         "/users",
         "/users/add",
@@ -31,7 +34,10 @@ export const config = {
         "/api/orders/[orderId]",
 
         "/api/companies",
+        "/api/companies/[companyId]",
+
         "/api/gas",
+        "/api/gas/[gasId]",
 
         "/api/users",
 
