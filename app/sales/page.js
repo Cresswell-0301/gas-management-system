@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SalesTracking from "@/components/SalesTracking";
-import { ArrowDownToLine } from "lucide-react";
+import { ArrowDownToLine, FileDown } from "lucide-react";
 
 function getFileName(selectedCompany, selectedMonth, filteredOrders, type) {
     let fileName = `Sales_Data.` + type;
@@ -347,7 +347,7 @@ const SalesPage = () => {
 
                     {/* PDF */}
                     <button onClick={exportToPDF} className="flex px-4 py-2 bg-yellow-600 text-white font-medium rounded-lg shadow-md hover:bg-yellow-700" title="Export to PDF">
-                        <ArrowDownToLine width={18} className="mr-2" /> PDF
+                        <FileDown width={18} className="mr-2" /> PDF
                     </button>
                 </div>
             </div>

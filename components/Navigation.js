@@ -78,7 +78,7 @@ const Navigation = () => {
                             <span className={getLinkClassNames("/gas")}>
                                 <div className="flex items-center gap-2">
                                     <Cylinder />
-                                    Gas Types
+                                    Gas
                                 </div>
                             </span>
                         </Link>

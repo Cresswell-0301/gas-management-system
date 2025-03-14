@@ -49,7 +49,7 @@ const GasPage = () => {
     return (
         <div className="h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
-                <h1 className="text-4xl font-bold text-blue-600">Gas Types</h1>
+                <h1 className="text-4xl font-bold text-blue-600">Gas</h1>
                 <Link href="/gas/add">
                     <span className="flex px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <Plus className="mr-2" />
