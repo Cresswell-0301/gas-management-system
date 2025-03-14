@@ -12,9 +12,9 @@ const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
                         <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Date</th>
                         <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Company</th>
                         <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Gas</th>
-                        <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Price</th>
+                        <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Price (RM)</th>
                         <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Quantity</th>
-                        <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Total</th>
+                        <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Total (RM)</th>
                         <th className="px-4 py-2 text-left text-sm font-bold text-gray-700 bg-gray-100">Actions</th>
                     </tr>
                 </thead>
@@ -38,9 +38,9 @@ const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
                                 </td>
                                 <td className="px-4 py-2 text-sm text-gray-800">{order.companyId?.name}</td>
                                 <td className="px-4 py-2 text-sm text-gray-800">{order.gasType?.type}</td>
-                                <td className="px-4 py-2 text-sm text-gray-800">RM {order.gasType.price.$numberDecimal}</td>
-                                <td className="px-4 py-2 text-sm text-gray-800">{order.quantity}</td>
-                                <td className="px-4 py-2 text-sm text-gray-800">RM {parseFloat(order.totalPrice.$numberDecimal).toFixed(2)}</td>
+                                <td className="px-4 py-2 text-sm text-gray-800 text-right">{order.gasType.price.$numberDecimal}</td>
+                                <td className="px-4 py-2 text-sm text-gray-800 text-right">{order.quantity}</td>
+                                <td className="px-4 py-2 text-sm text-gray-800 text-right">{parseFloat(order.totalPrice.$numberDecimal).toFixed(2)}</td>
                                 <td className="px-4 py-2 text-sm text-gray-700">
                                     <ActionComponent handleEdit={handleEditOrder} handleDelete={handleDeleteOrder} data={order} />
                                 </td>

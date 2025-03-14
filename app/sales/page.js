@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SalesTracking from "@/components/SalesTracking";
 import { ArrowDownToLine, FileDown } from "lucide-react";
+import CalculateCurrentData from "@/controller/CalculateCurrentData";
+import Pagination from "@/components/Pagination";
 
 function getFileName(selectedCompany, selectedMonth, filteredOrders, type) {
     let fileName = `Sales_Data.` + type;
@@ -23,12 +25,30 @@ function getFileName(selectedCompany, selectedMonth, filteredOrders, type) {
     return fileName;
 }
 
+function filterData(orders, selectedCompany, selectedMonth, searchQuery) {
+    return orders
+        .filter((order) => {
+            const matchesCompany = selectedCompany ? order.companyId._id === selectedCompany : true;
+            const matchesSearch = order.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesMonth = selectedMonth ? new Date(order.created_at).toLocaleString("en-MY", { month: "short", year: "numeric" }) === selectedMonth : true;
+            return matchesCompany && matchesSearch && matchesMonth;
+        })
+        .sort((a, b) => b.invoiceNumber.localeCompare(a.invoiceNumber));
+}
+
 const SalesPage = () => {
     const router = useRouter();
     const [orders, setOrders] = useState([]);
-    const [searchQuery, setSearchQuery] = useState(""); // search input
-    const [selectedCompany, setSelectedCompany] = useState(""); // company dropdown
-    const [selectedMonth, setSelectedMonth] = useState(""); // month filter
+
+    // Filter
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedMonth, setSelectedMonth] = useState("");
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [itemsPerPage] = useState(10);
 
     const fetchOrders = async () => {
         const res = await fetch("/api/orders");
@@ -39,6 +59,15 @@ const SalesPage = () => {
     useEffect(() => {
         fetchOrders();
     }, []);
+
+    const filteredCurrentOrders = filterData(orders, selectedCompany, selectedMonth, searchQuery);
+
+    const currentData = CalculateCurrentData(filteredCurrentOrders, currentPage, itemsPerPage, "sales");
+
+    useEffect(() => {
+        setTotalPages(Math.ceil(filteredCurrentOrders.length / itemsPerPage));
+        setCurrentPage(1);
+    }, [searchQuery, selectedCompany, selectedMonth, orders]);
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -56,14 +85,7 @@ const SalesPage = () => {
 
     const uniqueMonths = Array.from(new Set(orders.map((order) => new Date(order.created_at).toLocaleString("en-MY", { month: "short", year: "numeric" }))));
 
-    const filteredOrders = orders
-        .filter((order) => {
-            const matchesCompany = selectedCompany ? order.companyId._id === selectedCompany : true;
-            const matchesSearch = order.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesMonth = selectedMonth ? new Date(order.created_at).toLocaleString("en-MY", { month: "short", year: "numeric" }) === selectedMonth : true;
-            return matchesCompany && matchesSearch && matchesMonth;
-        })
-        .sort((a, b) => b.invoiceNumber.localeCompare(a.invoiceNumber));
+    const filteredOrders = filterData(orders, selectedCompany, selectedMonth, searchQuery);
 
     // Function to export the data to CSV
     const exportToCSV = () => {
@@ -335,8 +357,12 @@ const SalesPage = () => {
         }
     };
 
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
     return (
-        <div className="h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="h-full bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Sales</h1>
                 <div className="space-x-4 flex ">
@@ -352,42 +378,42 @@ const SalesPage = () => {
                 </div>
             </div>
 
-            <div className="mb-8">
-                <div className="flex gap-4">
-                    {/* Search Input Invoice No */}
-                    <input
-                        type="text"
-                        placeholder="Search by Invoice No"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="p-2 border border-gray-300 rounded-md w-full max-w-md"
-                    />
+            <div className="flex gap-4">
+                {/* Search Input Invoice No */}
+                <input
+                    type="text"
+                    placeholder="Search by Invoice No"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className="p-2 border border-gray-300 rounded-md w-full max-w-md"
+                />
 
-                    {/* Company Filter */}
-                    <select value={selectedCompany} onChange={handleCompanyChange} className="p-2 border border-gray-300 rounded-md w-full max-w-xs">
-                        <option value="">All Companies</option>
-                        {uniqueCompanies.map((company) => (
-                            <option key={company._id} value={company._id}>
-                                {company.name}
-                            </option>
-                        ))}
-                    </select>
+                {/* Company Filter */}
+                <select value={selectedCompany} onChange={handleCompanyChange} className="p-2 border border-gray-300 rounded-md w-full max-w-xs">
+                    <option value="">All Companies</option>
+                    {uniqueCompanies.map((company) => (
+                        <option key={company._id} value={company._id}>
+                            {company.name}
+                        </option>
+                    ))}
+                </select>
 
-                    {/* Month Filter */}
-                    <select value={selectedMonth} onChange={handleMonthChange} className="p-2 border border-gray-300 rounded-md w-full max-w-xs">
-                        <option value="">All Months</option>
-                        {uniqueMonths.map((month, index) => (
-                            <option key={index} value={month}>
-                                {month}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                {/* Month Filter */}
+                <select value={selectedMonth} onChange={handleMonthChange} className="p-2 border border-gray-300 rounded-md w-full max-w-xs">
+                    <option value="">All Months</option>
+                    {uniqueMonths.map((month, index) => (
+                        <option key={index} value={month}>
+                            {month}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto">
-                <SalesTracking orders={filteredOrders} handleEditOrder={handleEditOrder} handleDeleteOrder={handleDeleteOrder} />
+                <SalesTracking orders={currentData} handleEditOrder={handleEditOrder} handleDeleteOrder={handleDeleteOrder} />
             </div>
+
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
         </div>
     );
 };

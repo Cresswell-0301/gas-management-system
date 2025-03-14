@@ -4,21 +4,49 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import GasList from "@/components/GasList";
+import Pagination from "@/components/Pagination";
 import { Plus } from "lucide-react";
+import CalculateCurrentData from "@/controller/CalculateCurrentData";
 
 const GasPage = () => {
     const router = useRouter();
     const [gasTypes, setGasTypes] = useState([]);
 
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [itemsPerPage] = useState(10);
+
     const fetchGasTypes = async () => {
         const res = await fetch("/api/gas");
         const data = await res.json();
         setGasTypes(data);
+        setTotalPages(Math.ceil(data.length / itemsPerPage));
     };
 
     useEffect(() => {
         fetchGasTypes();
     }, []);
+
+    const filteredGasTypes = gasTypes
+        .filter((gasType) => {
+            const matchesSearch = gasType.type.toLowerCase().includes(searchQuery.toLowerCase());
+            return matchesSearch;
+        })
+        .sort((a, b) => a.type.localeCompare(b.type));
+
+    const currentData = CalculateCurrentData(filteredGasTypes, currentPage, itemsPerPage);
+
+    useEffect(() => {
+        setTotalPages(Math.ceil(filteredGasTypes.length / itemsPerPage));
+        setCurrentPage(1);
+    }, [searchQuery, gasTypes]);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
     const handleEditGas = async (gas) => {
         router.push(`/gas/${gas._id}/edit`);
@@ -46,8 +74,12 @@ const GasPage = () => {
         }
     };
 
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
     return (
-        <div className="h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="h-full bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Gas</h1>
                 <Link href="/gas/add">
@@ -57,9 +89,20 @@ const GasPage = () => {
                     </span>
                 </Link>
             </div>
+
+            <input
+                type="text"
+                placeholder="Search by Gas Name"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="p-2 border border-gray-300 rounded-md w-full max-w-md"
+            />
+
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto">
-                <GasList gasTypes={gasTypes} handleEditGas={handleEditGas} handleDeleteGas={handleDeleteGas} />
+                <GasList gasTypes={currentData} handleEditGas={handleEditGas} handleDeleteGas={handleDeleteGas} />
             </div>
+
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
         </div>
     );
 };

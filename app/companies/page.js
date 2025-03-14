@@ -5,10 +5,19 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CompanyList from "@/components/CompanyList";
 import { Plus } from "lucide-react";
+import CalculateCurrentData from "@/controller/CalculateCurrentData";
+import Pagination from "@/components/Pagination";
 
 const CompaniesPage = () => {
     const router = useRouter();
     const [companies, setCompanies] = useState([]);
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [itemsPerPage] = useState(10);
 
     const fetchCompanies = async () => {
         const res = await fetch("/api/companies");
@@ -19,6 +28,24 @@ const CompaniesPage = () => {
     useEffect(() => {
         fetchCompanies();
     }, []);
+
+    const filteredCompanies = companies
+        .filter((company) => {
+            const matchesSearch = company.name.toLowerCase().includes(searchQuery.toLowerCase());
+            return matchesSearch;
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    const currentData = CalculateCurrentData(filteredCompanies, currentPage, itemsPerPage);
+
+    useEffect(() => {
+        setTotalPages(Math.ceil(filteredCompanies.length / itemsPerPage));
+        setCurrentPage(1);
+    }, [searchQuery, companies]);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
     const handleEditCompany = async (company) => {
         router.push(`/companies/${company._id}/edit`);
@@ -46,8 +73,12 @@ const CompaniesPage = () => {
         }
     };
 
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
     return (
-        <div className="h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="h-full bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Company</h1>
                 <Link href="/companies/add">
@@ -57,9 +88,20 @@ const CompaniesPage = () => {
                     </span>
                 </Link>
             </div>
+
+            <input
+                type="text"
+                placeholder="Search by Company Name"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="p-2 border border-gray-300 rounded-md w-full max-w-md"
+            />
+
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto">
-                <CompanyList companies={companies} handleEditCompany={handleEditCompany} handleDeleteCompany={handleDeleteCompany} />
+                <CompanyList companies={currentData} handleEditCompany={handleEditCompany} handleDeleteCompany={handleDeleteCompany} />
             </div>
+
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
         </div>
     );
 };

@@ -15,7 +15,7 @@ const CompanyList = ({ companies, handleEditCompany, handleDeleteCompany }) => {
             <tbody>
                 {companies.length === 0 ? (
                     <tr>
-                        <td colSpan="4" className="px-4 py-4 text-center text-gray-600">
+                        <td colSpan="5" className="px-4 py-4 text-center text-gray-600">
                             Currently, there are no companies.{" "}
                         </td>
                     </tr>
