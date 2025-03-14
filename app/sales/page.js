@@ -97,7 +97,7 @@ const SalesPage = () => {
                 month: "short",
                 year: "numeric",
             }),
-            order.invoiceNumber,
+            "Invoice " + order.invoiceNumber.slice(4),
             order.companyId.name,
             order.gasType.type,
             "RM " + order.gasType.price.$numberDecimal,
@@ -282,7 +282,7 @@ const SalesPage = () => {
                             .map(
                                 (order) => `
                             <tr>
-                                <td>${order.invoiceNumber}</td>
+                                <td>Invoice ${order.invoiceNumber.slice(4)}</td>
                                 <td>${new Date(new Date(order.created_at).getTime() - 8 * 60 * 60 * 1000).toLocaleString("en-MY", {
                                     day: "numeric",
                                     month: "short",
