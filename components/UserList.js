@@ -15,7 +15,7 @@ const UserList = ({ users, handleEditUser, handleDeleteUser }) => {
                 {users.length === 0 ? (
                     <tr>
                         <td colSpan="3" className="px-4 py-4 text-center text-gray-600">
-                            Currently, you don't have any users yet.
+                            Currently, you don&apos;t have any users yet.
                         </td>
                     </tr>
                 ) : (

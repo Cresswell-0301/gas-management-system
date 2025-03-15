@@ -213,7 +213,7 @@ const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
                     {orders.length === 0 ? (
                         <tr>
                             <td colSpan="8" className="px-4 py-4 text-center text-gray-600">
-                                Currently, you don't have any orders yet.
+                                Currently, you don&apos;t have any orders yet.
                             </td>
                         </tr>
                     ) : (
