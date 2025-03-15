@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import UserForm from "../../components/UserForm";
+import UserForm from "../../../../components/UserForm";
 import toast from "react-hot-toast";
 
 const UserAddPage = () => {

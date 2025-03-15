@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import UserForm from "../../components/UserForm";
-import GetPathName from "@/controller/GetPathName";
+import UserForm from "../../../../../components/UserForm";
+import GetPathName from "../../../../../controller/GetPathName";
 import toast from "react-hot-toast";
 
 const EditUserPage = () => {
