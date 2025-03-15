@@ -2,21 +2,19 @@
 
 import { useState, useEffect } from "react";
 import UserForm from "@/components/UserForm";
+import toast from "react-hot-toast";
 
 const UserAddPage = () => {
     const [editingUser, setEditingUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Fetching a user to edit (can be done based on route params or some ID)
         const fetchUserToEdit = async () => {
-            // Replace this with your logic for fetching a user
-            // Example: Fetch user by ID from the URL
-            const userId = "some_user_id"; // Get this dynamically from URL or context
+            const userId = "some_user_id";
             const res = await fetch(`/api/users/${userId}`);
             const data = await res.json();
-            setEditingUser(data); // Set the user data if editing
-            setIsLoading(false); // Stop loading
+            setEditingUser(data); 
+            setIsLoading(false);
         };
 
         if (editingUser === null) {
@@ -27,6 +25,8 @@ const UserAddPage = () => {
     }, [editingUser]);
 
     const handleCreateUser = async (userData) => {
+        toast.dismiss();
+
         const res = await fetch("/api/users", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -34,14 +34,16 @@ const UserAddPage = () => {
         });
 
         if (res.ok) {
-            alert(await res.text());
+            toast.success("User created successfully!");
             window.location.href = "/users";
         } else {
-            alert(await res.text());
+            toast.error("Failed to create user. Please try again.");
         }
     };
 
     const handleUpdateUser = async (userData) => {
+        toast.dismiss();
+
         const res = await fetch("/api/users", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -49,8 +51,9 @@ const UserAddPage = () => {
         });
 
         if (res.ok) {
-            const updatedUser = await res.json();
             setEditingUser(null);
+            toast.success("User updated successfully!");
+            window.location.href = "/users";
         }
     };
 

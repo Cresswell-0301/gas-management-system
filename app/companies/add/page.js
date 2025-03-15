@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import CompanyForm from "@/components/CompanyForm";
+import toast from "react-hot-toast";
 
 const AddCompanyPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (companyData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
 
         const res = await fetch("/api/companies", {
@@ -16,10 +19,10 @@ const AddCompanyPage = () => {
         });
 
         if (res.ok) {
-            alert("Company added successfully");
+            toast.success("Company added successfully");
             window.location.href = "/companies";
         } else {
-            alert("Failed to add company. Please try again.");
+            toast.error("Failed to add company. Please try again.");
         }
 
         setIsSubmitting(false);

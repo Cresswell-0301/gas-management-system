@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import UserForm from "@/components/UserForm";
 import GetPathName from "@/controller/GetPathName";
+import toast from "react-hot-toast";
 
 const EditUserPage = () => {
     const router = useRouter();
@@ -21,6 +22,8 @@ const EditUserPage = () => {
     }, [router.query]);
 
     const handleSubmit = async (userData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
 
         const res = await fetch(`/api/users/${GetPathName()}`, {
@@ -32,10 +35,10 @@ const EditUserPage = () => {
         });
 
         if (res.ok) {
-            alert("User data updated successfully!");
+            toast.success("User data updated successfully!");
             router.push("/users");
         } else {
-            alert("Failed to update user");
+            toast.error("Failed to update user");
         }
 
         setIsSubmitting(false);

@@ -6,6 +6,7 @@ import SalesTracking from "@/components/SalesTracking";
 import { ArrowDownToLine, FileDown } from "lucide-react";
 import CalculateCurrentData from "@/controller/CalculateCurrentData";
 import Pagination from "@/components/Pagination";
+import toast from "react-hot-toast";
 
 function getFileName(selectedCompany, selectedMonth, filteredOrders, type) {
     let fileName = `Sales_Data.` + type;
@@ -48,7 +49,7 @@ const SalesPage = () => {
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [itemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(9);
 
     const fetchOrders = async () => {
         const res = await fetch("/api/orders");
@@ -89,6 +90,8 @@ const SalesPage = () => {
 
     // Function to export the data to CSV
     const exportToCSV = () => {
+        toast.dismiss();
+
         const csvHeader = ["Date", "Invoice No", "Company Name", "Gas Type", "Price per Gas", "Quantity", "Total Price"];
 
         const csvRows = filteredOrders.map((order) => [
@@ -113,6 +116,8 @@ const SalesPage = () => {
 
         link.href = URL.createObjectURL(blob);
 
+        toast.success("CSV has been generated successfully! Downloading...");
+
         link.download = getFileName(selectedCompany, selectedMonth, filteredOrders, "csv");
 
         document.body.appendChild(link);
@@ -124,18 +129,20 @@ const SalesPage = () => {
 
     // Function to export the data to PDF
     const exportToPDF = async () => {
+        toast.dismiss();
+
         if (selectedCompany === "" && selectedMonth === "") {
-            alert("Please select a company & month to export PDF");
+            toast.error("Please select a company & month to export PDF");
             return;
         }
 
         if (selectedCompany === "") {
-            alert("Please select a company to export PDF");
+            toast.error("Please select a company to export PDF");
             return;
         }
 
         if (selectedMonth === "") {
-            alert("Please select a month to export PDF");
+            toast.error("Please select a month to export PDF");
             return;
         }
 
@@ -318,13 +325,15 @@ const SalesPage = () => {
             });
 
             if (res.ok) {
+                toast.success("PDF has been generated successfully! Downloading...");
+
                 const blob = await res.blob();
                 const link = document.createElement("a");
                 link.href = URL.createObjectURL(blob);
                 link.download = getFileName(selectedCompany, selectedMonth, filteredOrders, "pdf");
                 link.click();
             } else {
-                alert("Failed to generate PDF");
+                toast.error("Failed to generate PDF");
             }
         } catch (error) {
             console.error("Error exporting PDF:", error);
@@ -336,6 +345,8 @@ const SalesPage = () => {
     };
 
     const handleDeleteOrder = async (orderId) => {
+        toast.dismiss();
+        
         const confirmDelete = confirm("Are you sure you want to delete this order?");
 
         if (!confirmDelete) return;
@@ -349,10 +360,10 @@ const SalesPage = () => {
         });
 
         if (!res.ok) {
-            alert("Failed to delete order");
+            toast.error("Failed to delete order");
             return;
         } else {
-            alert("Order has been deleted successfully!");
+            toast.success("Order has been deleted successfully!");
             fetchOrders();
         }
     };
@@ -362,7 +373,7 @@ const SalesPage = () => {
     };
 
     return (
-        <div className="h-full bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="h-full bg-white py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Sales</h1>
                 <div className="space-x-4 flex ">
@@ -378,7 +389,7 @@ const SalesPage = () => {
                 </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 mb-4">
                 {/* Search Input Invoice No */}
                 <input
                     type="text"

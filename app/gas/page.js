@@ -7,6 +7,7 @@ import GasList from "@/components/GasList";
 import Pagination from "@/components/Pagination";
 import { Plus } from "lucide-react";
 import CalculateCurrentData from "@/controller/CalculateCurrentData";
+import toast from "react-hot-toast";
 
 const GasPage = () => {
     const router = useRouter();
@@ -17,7 +18,7 @@ const GasPage = () => {
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [itemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(9);
 
     const fetchGasTypes = async () => {
         const res = await fetch("/api/gas");
@@ -53,6 +54,8 @@ const GasPage = () => {
     };
 
     const handleDeleteGas = async (gasId) => {
+        toast.dismiss();
+
         const confirmDelete = confirm("Are you sure you want to delete this Gas?");
 
         if (!confirmDelete) return;
@@ -66,10 +69,10 @@ const GasPage = () => {
         });
 
         if (!res.ok) {
-            alert("Failed to delete gas");
+            toast.success("Failed to delete gas");
             return;
         } else {
-            alert("Gas has been deleted successfully!");
+            toast.error("Gas has been deleted successfully!");
             fetchGasTypes();
         }
     };
@@ -79,7 +82,7 @@ const GasPage = () => {
     };
 
     return (
-        <div className="h-full bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="h-full bg-white py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Gas</h1>
                 <Link href="/gas/add">
@@ -95,7 +98,7 @@ const GasPage = () => {
                 placeholder="Search by Gas Name"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="p-2 border border-gray-300 rounded-md w-full max-w-md"
+                className="mb-4 p-2 border border-gray-300 rounded-md w-full max-w-md"
             />
 
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto">

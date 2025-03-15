@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import OrderForm from "@/components/OrderForm";
 import { CircleX, Undo2 } from "lucide-react";
 import GetPathName from "@/controller/GetPathName";
+import toast from "react-hot-toast";
 
 const EditOrderPage = () => {
     const router = useRouter();
@@ -48,6 +49,8 @@ const EditOrderPage = () => {
     }, [router.query]);
 
     const handleSubmit = async (updatedOrderData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
 
         const res = await fetch(`/api/orders/${GetPathName()}`, {
@@ -59,10 +62,10 @@ const EditOrderPage = () => {
         });
 
         if (res.ok) {
-            alert("Order updated successfully!");
+            toast.success("Order updated successfully!");
             router.push("/sales");
         } else {
-            alert("Failed to update order");
+            toast.error("Failed to update order");
         }
     };
 

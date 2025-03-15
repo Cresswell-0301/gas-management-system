@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function PasswordViewIcon({ isPasswordVisible }) {
@@ -13,10 +14,12 @@ const UserForm = ({ onSubmit, initialData = {} }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const handleSubmit = (e) => {
+        toast.dismiss();
+
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            alert("Passwords don't match!");
+            toast.error("Passwords don't match!");
             return;
         }
 

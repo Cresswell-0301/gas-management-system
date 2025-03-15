@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import GasForm from "@/components/GasForm";
 import GetPathName from "@/controller/GetPathName";
+import toast from "react-hot-toast";
 
 const EditGasPage = () => {
     const router = useRouter();
@@ -21,6 +22,8 @@ const EditGasPage = () => {
     }, [router.query]);
 
     const handleSubmit = async (gasData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
 
         const res = await fetch(`/api/gas/${GetPathName()}`, {
@@ -32,10 +35,10 @@ const EditGasPage = () => {
         });
 
         if (res.ok) {
-            alert("Gas data updated successfully!");
+            toast.success("Gas data updated successfully!");
             router.push("/gas");
         } else {
-            alert("Failed to update gas");
+            toast.error("Failed to update gas");
         }
 
         setIsSubmitting(false);

@@ -1,9 +1,12 @@
 "use client";
 
+import toast from "react-hot-toast";
 import ActionComponent from "./ActionComponent";
 
 const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
     const exportToPDF = async (order) => {
+        toast.dismiss();
+
         const htmlContent = `
                 <head>
                     <style>
@@ -176,21 +179,23 @@ const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
             });
 
             if (res.ok) {
+                toast.success("PDF generated successfully");
+
                 const blob = await res.blob();
                 const link = document.createElement("a");
                 link.href = URL.createObjectURL(blob);
                 link.download = `${order.invoiceNumber}.pdf`;
                 link.click();
             } else {
-                alert("Failed to generate PDF");
+                toast.error("Failed to generate PDF");
             }
         } catch (error) {
-            console.error("Error exporting PDF:", error);
+            toast.error("Failed to generate PDF");
         }
     };
 
     return (
-        <div>
+        <div className="overflow-x-auto">
             <table className="min-w-full table-auto">
                 <thead>
                     <tr>
@@ -207,7 +212,7 @@ const SalesTracking = ({ orders, handleEditOrder, handleDeleteOrder }) => {
                 <tbody>
                     {orders.length === 0 ? (
                         <tr>
-                            <td colSpan="7" className="px-4 py-4 text-center text-gray-600">
+                            <td colSpan="8" className="px-4 py-4 text-center text-gray-600">
                                 Currently, you don't have any orders yet.
                             </td>
                         </tr>

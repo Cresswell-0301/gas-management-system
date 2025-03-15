@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import OrderForm from "@/components/OrderForm";
+import toast from "react-hot-toast";
 
 export default function Home() {
     const [companies, setCompanies] = useState([]);
@@ -26,6 +27,8 @@ export default function Home() {
     }, []);
 
     const handleSubmit = async (orderData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
 
         const res = await fetch("/api/orders", {
@@ -35,17 +38,17 @@ export default function Home() {
         });
 
         if (res.ok) {
-            alert("Order added successfully");
+            toast.success("Order added successfully");
             window.location.href = "/";
         } else {
-            alert("Failed to add order. Please try again.");
+            toast.error("Failed to add order. Please try again.");
         }
 
         setIsSubmitting(false);
     };
 
     return (
-        <div className="flex items-center justify-center h-full bg-gray-50 ">
+        <div className="flex items-center justify-center h-full bg-white">
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto my-auto w-full">
                 <OrderForm onSubmit={handleSubmit} companies={companies} gasTypes={gasTypes} isSubmitting={isSubmitting} />
             </div>

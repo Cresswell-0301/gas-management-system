@@ -7,6 +7,7 @@ import UserList from "@/components/UserList";
 import { Plus } from "lucide-react";
 import CalculateCurrentData from "@/controller/CalculateCurrentData";
 import Pagination from "@/components/Pagination";
+import toast from "react-hot-toast";
 
 const UsersPage = () => {
     const router = useRouter();
@@ -50,6 +51,8 @@ const UsersPage = () => {
     };
 
     const handleDeleteUser = async (userId) => {
+        toast.dismiss();
+
         const confirmDelete = confirm("Are you sure you want to delete this user?");
 
         if (!confirmDelete) return;
@@ -61,10 +64,10 @@ const UsersPage = () => {
         });
 
         if (res.ok) {
-            alert("User has been deleted successfully!");
+            toast.success("User has been deleted successfully!");
             fetchUsers();
         } else {
-            alert("Failed to delete user");
+            toast.error("Failed to delete user");
         }
     };
 

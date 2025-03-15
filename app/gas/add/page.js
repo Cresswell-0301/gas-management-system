@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import GasForm from "@/components/GasForm"; // Make sure this path is correct
+import toast from "react-hot-toast";
 
 const AddGasPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (gasData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
 
         const res = await fetch("/api/gas", {
@@ -16,10 +19,10 @@ const AddGasPage = () => {
         });
 
         if (res.ok) {
-            alert("Gas type added successfully");
+            toast.success("Gas type added successfully");
             window.location.href = "/gas";
         } else {
-            alert("Failed to add gas type. Please try again.");
+            toast.error("Failed to add gas type. Please try again.");
         }
 
         setIsSubmitting(false);

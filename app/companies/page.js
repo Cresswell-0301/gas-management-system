@@ -7,6 +7,7 @@ import CompanyList from "@/components/CompanyList";
 import { Plus } from "lucide-react";
 import CalculateCurrentData from "@/controller/CalculateCurrentData";
 import Pagination from "@/components/Pagination";
+import toast from "react-hot-toast";
 
 const CompaniesPage = () => {
     const router = useRouter();
@@ -17,7 +18,7 @@ const CompaniesPage = () => {
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [itemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(9);
 
     const fetchCompanies = async () => {
         const res = await fetch("/api/companies");
@@ -52,6 +53,8 @@ const CompaniesPage = () => {
     };
 
     const handleDeleteCompany = async (companyId) => {
+        toast.dismiss();
+
         const confirmDelete = confirm("Are you sure you want to delete this Company?");
 
         if (!confirmDelete) return;
@@ -65,10 +68,10 @@ const CompaniesPage = () => {
         });
 
         if (!res.ok) {
-            alert("Failed to delete company");
+            toast.success("Failed to delete company");
             return;
         } else {
-            alert("Company has been deleted successfully!");
+            toast.error("Company has been deleted successfully!");
             fetchCompanies();
         }
     };
@@ -78,7 +81,7 @@ const CompaniesPage = () => {
     };
 
     return (
-        <div className="h-full bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="h-full bg-white py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-blue-600">Company</h1>
                 <Link href="/companies/add">
@@ -94,7 +97,7 @@ const CompaniesPage = () => {
                 placeholder="Search by Company Name"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="p-2 border border-gray-300 rounded-md w-full max-w-md"
+                className="mb-4 p-2 border border-gray-300 rounded-md w-full max-w-md"
             />
 
             <div className="bg-white shadow-md rounded-lg px-6 py-6 max-w-6xl mx-auto">

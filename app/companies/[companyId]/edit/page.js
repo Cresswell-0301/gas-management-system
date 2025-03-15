@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import CompanyForm from "@/components/CompanyForm";
 import GetPathName from "@/controller/GetPathName";
+import toast from "react-hot-toast";
 
 const EditCompanyPage = () => {
     const router = useRouter();
@@ -23,6 +24,8 @@ const EditCompanyPage = () => {
     }, [router.query]);
 
     const handleSubmit = async (updatedCompanyData) => {
+        toast.dismiss();
+
         setIsSubmitting(true);
         try {
             const res = await fetch(`/api/companies/${GetPathName()}`, {
@@ -34,13 +37,13 @@ const EditCompanyPage = () => {
             });
 
             if (res.ok) {
-                alert("Company updated successfully!");
+                toast.success("Company updated successfully!");
                 router.push("/companies");
             } else {
-                alert("Failed to update company");
+                toast.error("Failed to update company");
             }
         } catch (error) {
-            alert("An error occurred while updating the company.");
+            toast.error("Failed to update company");
         } finally {
             setIsSubmitting(false);
         }

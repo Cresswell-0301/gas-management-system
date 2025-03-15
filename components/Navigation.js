@@ -34,8 +34,11 @@ const Navigation = () => {
     }, []);
 
     return (
-        <nav ref={navRef} className={`w-fit ${isOpen ? "bg-white" : "bg-transparent"}  shadow-lg rounded-lg p-6 fixed left-0 top-0 h-full z-20`}>
-            <div className="block lg:hidden mb-6">
+        <nav
+            ref={navRef}
+            className={`w-fit ${isOpen ? "bg-white" : "bg-transparent"} ${isOpen && "shadow-lg"} lg:shadow-lg lg:h-full rounded-lg p-6 fixed left-0 top-0 h-fit z-20`}
+        >
+            <div className="block lg:hidden">
                 <button onClick={toggleMenu} className="text-2xl text-blue-600 focus:outline-none">
                     {isOpen ? "✖" : "☰"}
                 </button>
