@@ -3,9 +3,12 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { BadgeDollarSign, Building, Cylinder, SquarePlus, UserRound } from "lucide-react";
+import { BadgeDollarSign, Building, Cylinder, LogOut, SquarePlus, UserRound } from "lucide-react";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 const Navigation = () => {
+    const { signOut } = useClerk();
+    const user = useUser();
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const navRef = useRef(null);
@@ -96,6 +99,20 @@ const Navigation = () => {
                             </span>
                         </Link>
                     </li> */}
+                    {user.user !== null && (
+                        <li>
+                            <span
+                                className="cursor-pointer block py-2 px-4 rounded-lg text-lg transition duration-300 text-blue-500 hover:bg-blue-100 hover:text-blue-700"
+                                onClick={signOut}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <LogOut />
+                                    Sign Out
+                                    {/* {user.user.emailAddresses} */}
+                                </div>
+                            </span>
+                        </li>
+                    )}
                 </ul>
             </div>
         </nav>

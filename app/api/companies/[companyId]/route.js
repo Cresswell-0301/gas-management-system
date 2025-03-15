@@ -1,5 +1,5 @@
-import { connectToDatabase } from "@/lib/mongodb";
-import Company from "@/models/Company";
+import { connectToDatabase } from "../../../../lib/mongodb";
+import Company from "../../../../models/Company";
 
 export async function GET(req, { params }) {
     const { companyId } = params;

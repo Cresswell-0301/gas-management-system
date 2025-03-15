@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 const OrderForm = ({ onSubmit, companies = [], gasTypes = [], initialData }) => {
     const [companyId, setCompanyId] = useState(initialData?.companyId || "");
@@ -27,7 +28,15 @@ const OrderForm = ({ onSubmit, companies = [], gasTypes = [], initialData }) => 
     };
 
     const handleSubmit = (e) => {
+        toast.dismiss();
+
         e.preventDefault();
+
+        if (quantity == 0) {
+            toast.error("Quantity must be greater than 0");
+            return;
+        }
+
         const orderData = { companyId, gasType, pricePerGas, quantity, totalPrice };
         onSubmit(orderData);
     };

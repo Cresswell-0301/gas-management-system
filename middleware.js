@@ -1,57 +1,31 @@
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const allowedIPs = process.env.ALLOWED_IPS ? process.env.ALLOWED_IPS.split(", ") : [];
+const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
 
-const localIps = process.env.LOCAL_IPS ? process.env.LOCAL_IPS.split(", ") : [];
-
-export function middleware(req) {
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || req.ip || "::1";
-
-    console.log("Request Ip Address: ", ip);
-
-    if (!allowedIPs.includes(ip) && !localIps.includes(ip)) {
-        return NextResponse.redirect(new URL("/invalid-device", req.url));
-    }
-
-    // Block any routes that start with "/users"
-    if (req.url.includes("/users")) {
-        return NextResponse.redirect(new URL("/invalid-device", req.url));
+export default clerkMiddleware(async (auth, request) => {
+    if (!isPublicRoute(request)) {
+        await auth.protect();
     }
 
     return NextResponse.next();
-}
+});
 
 export const config = {
-    matcher: [
-        "/",
-
-        "/sales",
-        "/sales/[orderId]/edit",
-
-        "/companies",
-        "/companies/add",
-        "/companies/[companyId]/edit",
-
-        "/gas",
-        "/gas/add",
-        "/gas/[gasId]/edit",
-
-        "/users",
-        "/users/add",
-        "/users/[userId]/edit",
-
-        "/api/orders",
-        "/api/orders/[orderId]",
-
-        "/api/companies",
-        "/api/companies/[companyId]",
-
-        "/api/gas",
-        "/api/gas/[gasId]",
-
-        "/api/users",
-        "/api/users/[userId]",
-
-        "/api/export-pdf",
-    ],
+    matcher: ["/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)", "/(api|trpc)(.*)"],
 };
+
+// import { withAuth } from "@clerk/nextjs/server";
+
+// export default withAuth(async (auth, request) => {
+//     if (!auth.user) {
+//         console.log("Unauthorized");
+//         return new Response("Unauthorized", { status: 401 });
+//     }
+//     console.log("Authorized");
+//     return new Response("Authorized");
+// });
+
+// export const config = {
+//     matcher: [],
+// };
