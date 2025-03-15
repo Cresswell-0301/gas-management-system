@@ -1,31 +1,13 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs/server";
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+export default authMiddleware({
+    signInUrl: "/sign-in",
 
-export default clerkMiddleware(async (auth, request) => {
-    if (!isPublicRoute(request)) {
-        await auth.protect();
-    }
+    publicRoutes: ["/sign-in(.*)", "/sign-up(.*)"],
 
-    return NextResponse.next();
+    ignoredRoutes: [],
 });
 
 export const config = {
-    matcher: ["/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)", "/(api|trpc)(.*)"],
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
-// import { withAuth } from "@clerk/nextjs/server";
-
-// export default withAuth(async (auth, request) => {
-//     if (!auth.user) {
-//         console.log("Unauthorized");
-//         return new Response("Unauthorized", { status: 401 });
-//     }
-//     console.log("Authorized");
-//     return new Response("Authorized");
-// });
-
-// export const config = {
-//     matcher: [],
-// };
