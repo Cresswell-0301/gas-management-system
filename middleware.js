@@ -7,6 +7,8 @@ const localIps = process.env.LOCAL_IPS ? process.env.LOCAL_IPS.split(", ") : [];
 export function middleware(req) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || req.ip || "::1";
 
+    console.log("Request Ip Address: ", ip);
+
     if (!allowedIPs.includes(ip) && !localIps.includes(ip)) {
         return NextResponse.redirect(new URL("/invalid-device", req.url));
     }

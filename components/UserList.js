@@ -1,5 +1,4 @@
 import ActionComponent from "./ActionComponent";
-import { SquarePen, Trash2 } from "lucide-react";
 
 const UserList = ({ users, handleEditUser, handleDeleteUser }) => {
     return (
