@@ -13,6 +13,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         }
     };
 
+    if (totalPages === 0) {
+        return null;
+    }
+
     return (
         <div className="flex justify-between items-center mt-2">
             <button onClick={goToPreviousPage} disabled={currentPage === 1} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:opacity-50">
