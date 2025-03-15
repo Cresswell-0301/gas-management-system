@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { BadgeDollarSign, Building, Cylinder, LogOut, SquarePlus, UserRound } from "lucide-react";
 import { useClerk, useUser } from "@clerk/nextjs";
+import CheckEmailAccess from "@/controller/CheckEmailAccess";
+import { useRouter } from "next/navigation";
 
 const Navigation = () => {
     const { signOut } = useClerk();
@@ -12,6 +14,12 @@ const Navigation = () => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const navRef = useRef(null);
+    const access = CheckEmailAccess();
+    const router = useRouter();
+
+    if (!access) {
+        router.push("invalid-access");
+    }
 
     const getLinkClassNames = (path) => {
         const isActive = pathname === path;
@@ -89,7 +97,7 @@ const Navigation = () => {
                             </span>
                         </Link>
                     </li>
-                    {/* <li>
+                    <li>
                         <Link href="/users">
                             <span className={getLinkClassNames("/users")}>
                                 <div className="flex items-center gap-2">
@@ -98,7 +106,7 @@ const Navigation = () => {
                                 </div>
                             </span>
                         </Link>
-                    </li> */}
+                    </li>
                     {user.user !== null && (
                         <li>
                             <span
