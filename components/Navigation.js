@@ -97,7 +97,7 @@ const Navigation = () => {
                             </span>
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link href="/users">
                             <span className={getLinkClassNames("/users")}>
                                 <div className="flex items-center gap-2">
@@ -106,7 +106,7 @@ const Navigation = () => {
                                 </div>
                             </span>
                         </Link>
-                    </li>
+                    </li> */}
                     {user.user !== null && (
                         <li>
                             <span
