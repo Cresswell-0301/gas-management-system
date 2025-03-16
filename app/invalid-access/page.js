@@ -1,11 +1,18 @@
 "use client";
 
 import CheckEmailAccess from "@/controller/CheckEmailAccess";
+import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function InvalidPage() {
     const access = CheckEmailAccess();
     const router = useRouter();
+    const { signOut } = useClerk();
+
+    useEffect(() => {
+        signOut();
+    }, []);
 
     return (
         <div className="h-full flex items-center justify-center bg-gray-50">
