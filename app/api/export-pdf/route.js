@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import puppeteer from "puppeteer";
 
 export async function POST(req) {
     const { htmlContent } = await req.json();
@@ -9,14 +8,23 @@ export async function POST(req) {
     }
 
     try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(htmlContent);
-        const pdfBuffer = await page.pdf({ format: "A4" });
+        const browserlessApiKey = process.env.BROWSERLESS_API_KEY;
 
-        await browser.close();
+        const response = await fetch(`https://chrome.browserless.io/pdf?token=${browserlessApiKey}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ html: htmlContent }),
+        });
 
-        return new NextResponse(pdfBuffer, {
+        if (!response.ok) {
+            throw new Error("Browserless API error");
+        }
+
+        const pdfBuffer = await response.arrayBuffer();
+
+        return new NextResponse(Buffer.from(pdfBuffer), {
             headers: {
                 "Content-Type": "application/pdf",
                 "Content-Disposition": 'attachment; filename="sales_report.pdf"',
